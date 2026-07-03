@@ -13,15 +13,25 @@
  */
 export const REGLA_CALCULO_VERSION = "v0-conservador-provisional";
 
+/**
+ * Las claves DEBEN coincidir con los `slug` reales de
+ * `rutacar_landing_new/lib/content/tipologias.ts` (single source de verdad del
+ * catálogo, LA-2026-027) — este backend no importa ese archivo porque vive en
+ * un repositorio separado, así que la lista se mantiene sincronizada a mano.
+ * Verificado durante la prueba end-to-end del proxy: una primera versión de
+ * este mapa usaba slugs inventados que no coincidían con ninguno real, y toda
+ * cotización caía silenciosamente al rango por defecto sin que ningún test lo
+ * detectara (los tests del backend no conocen el catálogo real del frontend).
+ */
 const RANGO_BASE_CLP: Record<string, { min: number; max: number }> = {
-  aljibe: { min: 8_000_000, max: 14_000_000 },
-  batea: { min: 6_000_000, max: 10_000_000 },
-  cabina: { min: 5_000_000, max: 9_000_000 },
-  carroceria_gas: { min: 9_000_000, max: 16_000_000 },
-  carroceria_mineria: { min: 12_000_000, max: 22_000_000 },
-  furgon: { min: 6_500_000, max: 11_000_000 },
-  jaula_ganadera: { min: 7_000_000, max: 12_500_000 },
-  plataforma: { min: 5_500_000, max: 9_500_000 },
+  "carga-general": { min: 5_500_000, max: 9_500_000 },
+  "plana-con-baranda": { min: 5_500_000, max: 9_500_000 },
+  plana: { min: 5_000_000, max: 9_000_000 },
+  gas: { min: 9_000_000, max: 16_000_000 },
+  cortinera: { min: 6_500_000, max: 11_000_000 },
+  especiales: { min: 8_000_000, max: 14_000_000 },
+  "estandar-ganadero": { min: 7_000_000, max: 12_500_000 },
+  minera: { min: 12_000_000, max: 22_000_000 },
 };
 
 const RANGO_DEFAULT_CLP = { min: 5_000_000, max: 10_000_000 };

@@ -1,11 +1,11 @@
-# rutacar_api
+# rutacar_landing_back
 
-Backend del **Incremento 02 · Cotizador de Carrocerías** del proyecto Ruta Car. Repositorio separado del sitio público (`rutacar_landing_new`, Incremento 01) — ver la justificación completa de esta arquitectura en [`../prompt-maestro-desarrollo.md`](../prompt-maestro-desarrollo.md).
+Backend del **Incremento 02 · Cotizador de Carrocerías** del proyecto Ruta Car. Repositorio: [aicreationcl/rutacar_landing_back](https://github.com/aicreationcl/rutacar_landing_back) — separado del sitio público (`rutacar_landing_new`, Incremento 01). Ver la justificación completa de esta arquitectura en [`../prompt-maestro-desarrollo.md`](../prompt-maestro-desarrollo.md).
 
 ## Arquitectura
 
 ```
-Next.js (rutacar_landing_new)  ── POST /api/cotizaciones (proxy server-to-server) ──▶  rutacar_api (este repo)  ──▶  MongoDB Atlas
+Next.js (rutacar_landing_new)  ── POST /api/cotizaciones (proxy server-to-server) ──▶  rutacar_landing_back (este repo)  ──▶  MongoDB Atlas
 ```
 
 - El navegador **nunca** llama a este backend directamente. Solo el servidor de Next.js lo hace, autenticado con `BACKEND_API_KEY` (header `x-backend-api-key`).
