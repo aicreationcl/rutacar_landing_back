@@ -15,9 +15,13 @@ const envSchema = z.object({
   RATE_LIMIT_WINDOW_MINUTES: z.coerce.number().positive().default(60),
   RATE_LIMIT_MAX_REQUESTS: z.coerce.number().positive().default(5),
   // dotenv carga las variables vacías del .env como "" (no como undefined) —
-  // se normalizan a undefined antes de validar el formato de email.
-  NOTIFICATION_EMAIL_TO: z.preprocess((v) => (v === "" ? undefined : v), z.email().optional()),
-  NOTIFICATION_EMAIL_FROM: z.preprocess((v) => (v === "" ? undefined : v), z.email().optional()),
+  // se normalizan a undefined antes de validar. Las tres son opcionales a
+  // propósito: sin ellas, notification.service.ts registra el intento pero no
+  // envía de verdad (mismo comportamiento que tenían NOTIFICATION_EMAIL_TO/FROM
+  // antes de conectar Resend).
+  RESEND_API_KEY: z.preprocess((v) => (v === "" ? undefined : v), z.string().optional()),
+  FROM_EMAIL: z.preprocess((v) => (v === "" ? undefined : v), z.email().optional()),
+  ADMIN_EMAIL: z.preprocess((v) => (v === "" ? undefined : v), z.email().optional()),
 });
 
 const parsed = envSchema.safeParse(process.env);

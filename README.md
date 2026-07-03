@@ -45,6 +45,6 @@ npm run lint    # eslint
 ## Pendientes conocidos (no bloquean el esqueleto, sí el DP-FINAL del incremento)
 
 - **Reglas de cálculo reales** (`src/services/pricing.service.ts`): hoy usa un rango conservador provisional (`v0-conservador-provisional`) por tipología — depende de la reunión con el equipo comercial de Ruta Car (riesgo R-001 del prompt maestro).
-- **Notificación por email real** (`src/services/notification.service.ts`): el envío hoy es un stub que solo loguea el contenido — falta conectar un proveedor real (Resend/Nodemailer) antes de DP-FINAL.
+- **Notificación por email real** (`src/services/notification.service.ts`): conectada a Resend, pero con `FROM_EMAIL=onboarding@resend.dev` (dominio de pruebas sin verificar) — solo puede enviar hacia `ADMIN_EMAIL` (la cuenta dueña de la API key), no hacia el email real que escribe cada cliente en el formulario. Verificar un dominio propio de Ruta Car en resend.com/domains antes de DP-FINAL (ver DEUDA_TECNICA.md DT-02).
 - **Rate limiting por IP real de usuario**: el limiter de este backend (`src/middleware/rateLimiter.ts`) solo ve la IP del servidor de Next.js, no la del visitante — el rate limiting por IP de usuario real debe implementarse en el Route Handler proxy de Next.js (próximo paso, todavía no construido).
 - **`targetPort` de Railway**: al crear el servicio de este backend en Railway, verificar el `targetPort` contra el puerto real de arranque de Express (`PORT` en `.env`) — LA-2026-042 ya se repitió una vez en el Incremento 01.
