@@ -17,6 +17,14 @@ export const ALLOWED_ORIGINS = env.ALLOWED_ORIGINS;
 export function createApp(): Express {
   const app = express();
 
+  // Railway pone exactamente un reverse proxy delante de este servicio, que
+  // agrega X-Forwarded-For. Sin esto, express-rate-limit no puede confiar en
+  // esa cabecera (ERR_ERL_UNEXPECTED_X_FORWARDED_FOR) y cae a limitar por la
+  // IP del proxy — un único límite global compartido por todos los clientes,
+  // no un límite por IP real. "1" = un solo salto de confianza, nunca `true`
+  // (confiaría en toda la cadena, spoofeable por el cliente).
+  app.set("trust proxy", 1);
+
   app.disable("x-powered-by");
   app.use(helmet());
   app.use(express.json({ limit: "100kb" }));
