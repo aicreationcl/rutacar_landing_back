@@ -1,6 +1,6 @@
-import { Resend } from "resend";
 import { env } from "../config/env.js";
 import { CotizacionModel, type CotizacionDoc } from "../models/Cotizacion.js";
+import { enviarEmailReal } from "./email.js";
 
 /**
  * R-004: una notificación fallida en silencio significa que un lead nunca llega
@@ -21,39 +21,6 @@ import { CotizacionModel, type CotizacionDoc } from "../models/Cotizacion.js";
 export interface ResultadoNotificacion {
   enviada: boolean;
   intento: number;
-}
-
-const resend = env.RESEND_API_KEY ? new Resend(env.RESEND_API_KEY) : null;
-
-async function enviarEmailReal(asunto: string, cuerpo: string, destinatario: string): Promise<boolean> {
-  // LA-2026-005 aplica también a servicios externos, no solo a Mongo: los
-  // tests de integración no deben depender de (ni disparar) un envío real cada
-  // vez que corren. Vitest fija NODE_ENV=test por defecto.
-  if (env.NODE_ENV === "test") {
-    return false;
-  }
-
-  if (!resend || !env.FROM_EMAIL) {
-    console.warn(
-      "[notification.service] RESEND_API_KEY/FROM_EMAIL no configurados — la notificación no se envía de verdad.",
-    );
-    return false;
-  }
-
-  const { data, error } = await resend.emails.send({
-    from: env.FROM_EMAIL,
-    to: destinatario,
-    subject: asunto,
-    text: cuerpo,
-  });
-
-  if (error) {
-    console.error(`[notification.service] Resend rechazó el envío a ${destinatario}:`, error);
-    return false;
-  }
-
-  console.info(`[notification.service] Email enviado a ${destinatario} (Resend id: ${data?.id})`);
-  return true;
 }
 
 export async function notificarEquipoComercial(cotizacion: CotizacionDoc): Promise<ResultadoNotificacion> {

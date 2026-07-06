@@ -4,6 +4,7 @@ import { env } from "./config/env.js";
 import { requireBackendApiKey } from "./middleware/apiKeyAuth.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 import { cotizacionesRouter } from "./routes/cotizaciones.routes.js";
+import { precalificacionRouter } from "./routes/precalificacion.routes.js";
 
 /**
  * LA-2026-017: los orígenes permitidos quedan documentados aquí y en el README,
@@ -38,6 +39,7 @@ export function createApp(): Express {
   // arquitectura del Incremento 02).
   app.use("/api", requireBackendApiKey);
   app.use("/api/cotizaciones", cotizacionesRouter);
+  app.use("/api/precalificaciones", precalificacionRouter);
 
   app.use((_req, res) => {
     res.status(404).json({ error: "No encontrado" });

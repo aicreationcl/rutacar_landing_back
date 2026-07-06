@@ -13,7 +13,8 @@ import { env } from "../config/env.js";
  * rate limiting por IP real del visitante, que debe vivir en el Route Handler
  * proxy de Next.js (pendiente al construirlo). Ver R-003 en el prompt maestro.
  */
-export const cotizacionesRateLimiter = rateLimit({
+/** Compartido por /api/cotizaciones y /api/precalificaciones — mismo objetivo de anti-abuso. */
+export const leadsRateLimiter = rateLimit({
   windowMs: env.RATE_LIMIT_WINDOW_MINUTES * 60 * 1000,
   limit: env.RATE_LIMIT_MAX_REQUESTS,
   standardHeaders: true,
