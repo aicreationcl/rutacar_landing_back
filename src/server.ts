@@ -1,10 +1,13 @@
 import { createApp } from "./app.js";
 import { env } from "./config/env.js";
 import { connectDatabase } from "./db/connection.js";
+import { iniciarJobSeguimientoFrio } from "./jobs/seguimientoFrio.job.js";
 
 async function main(): Promise<void> {
   await connectDatabase();
   console.info("[server] Conectado a MongoDB");
+
+  iniciarJobSeguimientoFrio();
 
   const app = createApp();
   app.listen(env.PORT, () => {
